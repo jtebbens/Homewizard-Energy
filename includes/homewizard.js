@@ -34,7 +34,6 @@ module.exports = (function(){
       name: 'HomeWizard Energy',
       settings: {
          homewizard_ip: '192.168.1.123',
-         homewizard_pass: 'xxxxx',
          homewizard_ledring: true,
       }
    };
@@ -56,12 +55,12 @@ module.exports = (function(){
       callback(self.devices);
    };
 
-   homewizard.getDeviceData = function(device_id, callback) {
+   homewizard.getDeviceData = function(device_id, data_part, callback) {
 
-      if (typeof self.devices[device_id] === 'undefined' || typeof self.devices[device_id].polldata === 'undefined') {
+      if (typeof self.devices[device_id] === 'undefined' || typeof self.devices[device_id].polldata === 'undefined' || typeof self.devices[device_id].polldata[data_part] === 'undefined') {
          callback([]);
       } else {
-         callback(self.devices[device_id].polldata);
+         callback(self.devices[device_id].polldata[data_part]);
       }
    };
 

@@ -34,10 +34,10 @@
     }
   },
   "bugs": {
-     "url": "https://github.com/jtebbens/com.homewizardenergy/issues"
+     "url": "https://github.com/jtebbens/Homewizard-Energy/issues"
   },
-  "source": "https://github.com/jtebbens/com.homewizardenergy",
-  "homeyCommunityTopicId": 19267,
+  "source": "https://github.com/jtebbens/Homewizard-Energy",
+  "homeyCommunityTopicId": 34663,
   "flow": {
     "triggers": [
       {
