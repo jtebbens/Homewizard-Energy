@@ -58,15 +58,15 @@ class HomeWizardDevice extends Homey.Device {
 			console.log("--Start HomeWizard Polling-- ");
 
 			me.getStatus(devices);
-			
+
 		}, 1000 * 10);
 
 	}
 
 	getStatus(devices) {
 	   	//var homewizard_id = this.getSetting('homewizard_id');
-		  //console.log('Device_id: ' + devices[index].getData().id);
-			//console.log('Devices in getStatus: ' + devices);
+		  //console.log('Devices in getStatus: ' + devices);
+			//console.log('Devices in getStatus: ' + devices.getData().id);
 			var me = this;
 
 			for (var index in devices) {
