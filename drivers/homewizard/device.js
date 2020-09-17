@@ -74,7 +74,8 @@ class HomeWizardDevice extends Homey.Device {
 			     homewizard.getDeviceData(devices[index].getData().id, function(callback) {
            console.log(callback);
 
-		 		   try {
+					 if (Object.keys(callback).length > 0) {
+		 		   	try {
 
 							// Parse data from Homewizard Energy
 							var metered_gas = callback.total_gas_m3;
@@ -113,7 +114,7 @@ class HomeWizardDevice extends Homey.Device {
 						} catch (err) {
 							console.log(err);
 						}
-
+					}
 				});
       }
    }
