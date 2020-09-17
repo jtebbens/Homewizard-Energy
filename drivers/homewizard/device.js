@@ -58,21 +58,21 @@ class HomeWizardDevice extends Homey.Device {
 			console.log("--Start HomeWizard Polling-- ");
 
 			me.getStatus(devices);
-
+			
 		}, 1000 * 10);
 
 	}
 
 	getStatus(devices) {
 	   	//var homewizard_id = this.getSetting('homewizard_id');
-		  //console.log('Homewizard_id: ' + homewizard_id);
+		  //console.log('Device_id: ' + devices[index].getData().id);
 			//console.log('Devices in getStatus: ' + devices);
 			var me = this;
 
 			for (var index in devices) {
 				   //homewizard.call(devices[index].getData().id, '/api/v1/data', function(callback) {
-			     homewizard.getDeviceData(devices[index].getData().id, function(callback) {
-           console.log(callback);
+			     homewizard.getDeviceData(devices[index].getData().id, 'energylinks', function(callback) {
+           //console.log(this);
 
 					 if (Object.keys(callback).length > 0) {
 		 		   	try {

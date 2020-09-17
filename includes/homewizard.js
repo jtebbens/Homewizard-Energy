@@ -54,12 +54,12 @@ module.exports = (function(){
       callback(self.devices);
    };
 
-   homewizard.getDeviceData = function(device_id, callback) {
-
-      if (typeof self.devices[device_id] === 'undefined' || typeof self.devices[device_id].polldata === 'undefined') {
+   homewizard.getDeviceData = function(device_id, data_part, callback) {
+     //console.log(self);
+      if (typeof self.devices[device_id] === 'undefined' || typeof self.devices[device_id].polldata === 'undefined' || typeof self.devices[device_id].polldata[data_part] === 'undefined') {
          callback([]);
       } else {
-         callback(self.devices[device_id].polldata);
+         callback(self.devices[device_id].polldata[data_part]);
       }
    };
 
@@ -69,20 +69,21 @@ module.exports = (function(){
          console.log('Call device ' + device_id);
          if ((typeof self.devices[device_id] !== 'undefined') && ("settings" in self.devices[device_id]) && ("homewizard_ip" in self.devices[device_id].settings)) {
             var homewizard_ip = self.devices[device_id].settings.homewizard_ip;
-            var url = 'http://' + homewizard_ip + uri_part;
-            request(url, function (error, response, body) {
-            // console.log('response: '+ response);
-            if (response === null || response === undefined) {
-                console.log("error undefined");
-                socket.emit("error", "http error");
-                return;
-           }
+            //var homewizard_pass = self.devices[device_id].settings.homewizard_pass;
 
+            var url = 'http://' + homewizard_ip + '/api/v1/data';
+            request(url, function (error, response, body) {
+                //console.log('response: '+ response);
+                if (response === null || response === undefined) {
+                            console.log("error undefined");
+                            socket.emit("error", "http error");
+                            return;
+              }
                if (!error && response.statusCode == 200) {
                   var jsonObject;
                   try {
                      jsonObject = JSON.parse(body);
-                     console.log(jsonObject);
+
                      if (jsonObject.smr_version != null) {
                         if(typeof callback === 'function') {
                             callback(null, jsonObject.response);
@@ -169,19 +170,23 @@ module.exports = (function(){
          self.devices['HW12345'].polldata.windmeters = response.windmeters;
 
       } else {
+         console.log(self);
          Object.keys(self.devices).forEach(function (device_id) {
             if (typeof self.devices[device_id].polldata === 'undefined') {
                self.devices[device_id].polldata = [];
             }
             homewizard.call(device_id, '/api/v1/data', function(err, response) {
-              console.log("Response from include: " +response);
-              console.log("Error Response from include: " +err);
+            //homewizard.call(device_id, '/api/v1/data', function(err, response) {
+
+              //console.log("Error Response from include: " +err);
+               console.log("Response from include: " +response);
                if (err === null) {
-                  self.devices[device_id].polldata = response;
+
+                  //self.devices[device_id].polldata = response;
                   //self.devices[device_id].polldata.preset = response.preset;
                   //self.devices[device_id].polldata.heatlinks = response.heatlinks;
-                  //self.devices[device_id].polldata.energylinks = response;
-                  //self.devices[device_id].polldata.energylinks = response;
+                  self.devices[device_id].polldata.energylinks = response;
+                  //self.devices[device_id].polldata.energylinks = response.energylinks;
                   //self.devices[device_id].polldata.energymeters = response.energymeters;
                   //self.devices[device_id].polldata.thermometers = response.thermometers;
                   //self.devices[device_id].polldata.rainmeters = response.rainmeters;
