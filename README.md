@@ -1,8 +1,8 @@
 # HomeWizard Energy
 
-This app let's you connect your HomeWizard Energy to Homey. You can add your HomeWizard Energy in the device section.
+This app let's you connect your HomeWizard Energy wifi dongle to Homey. You can add your HomeWizard Energy in the device section.
 
-v0.0.1
+v0.0.5
 - First release
 
 **If you like this app, then consider to buy me a beer :)**
