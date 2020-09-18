@@ -38,12 +38,17 @@ class HomeWizardDevice extends Homey.Device {
 		}
 
     // Init flow triggers
-	  this._flowTriggerPowerUsed = new Homey.FlowCardTriggerDevice('power_used_changed').register();
+	  //this._flowTriggerPowerUsed = new Homey.FlowCardTriggerDevice('power_used_changed').register();
+		this._flowTriggerPowerNetto = new Homey.FlowCardTriggerDevice('power_netto_changed').register();
   }
 
-  flowTriggerPowerUsed( device, tokens ) {
-	  this._flowTriggerPowerUsed.trigger( device, tokens ).catch( this.error )
-  }
+  //flowTriggerPowerUsed( device, tokens ) {
+	//  this._flowTriggerPowerUsed.trigger( device, tokens ).catch( this.error )
+  //  }
+
+	flowTriggerPowerNetto( device, tokens ) {
+		this._flowTriggerPowerNetto.trigger( device, tokens ).catch( this.error )
+	}
 
 
 		startPolling(devices) {
@@ -79,29 +84,26 @@ class HomeWizardDevice extends Homey.Device {
 
 							// Parse data from Homewizard Energy
 							var metered_gas = callback.total_gas_m3;
+							var energy_current_netto = ( callback.active_power_w ); // Netto power usage from aggregated value, this value can go negative
 							var metered_electricity_consumed_t1 = callback.total_power_import_t1_kwh;
 							var metered_electricity_produced_t1 = callback.total_power_export_t1_kwh;
 							var metered_electricity_consumed_t2 = callback.total_power_import_t2_kwh;
 							var metered_electricity_produced_t2 = callback.total_power_export_t2_kwh;
 
-							// Log data
-							console.log(metered_gas);
 							// Save export data
 							me.addCapability('meter_gas');
+							me.addCapability('measure_power');
               me.addCapability('meter_power.consumed.t1');
 							me.addCapability('meter_power.produced.t1');
 							me.addCapability('meter_power.consumed.t2');
 							me.addCapability('meter_power.produced.t2');
 
-
 							me.setCapabilityValue("meter_gas", metered_gas);
-
+              me.setCapabilityValue("measure_power", energy_current_netto);
 							me.setCapabilityValue("meter_power.consumed.t1", metered_electricity_consumed_t1);
 							me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
 							me.setCapabilityValue("meter_power.consumed.t2", metered_electricity_consumed_t2);
 							me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
-
-							var energy_current_netto = ( callback.active_power_w ); // Netto power usage from aggregated value, this value can go negative
 
 							// Trigger flows
 							if (energy_current_netto != me.getStoreValue('last_measure_power_netto') && energy_current_netto != undefined && energy_current_netto != null) {
