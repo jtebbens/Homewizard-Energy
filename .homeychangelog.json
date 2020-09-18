@@ -1,5 +1,5 @@
 {
-  "0.0.5": {
-    "en": "Code cleanup and first release"
+  "0.0.6": {
+    "en": "Added aggregated meter for compatability with power-by-the-hour application"
   }
 }

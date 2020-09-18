@@ -2,6 +2,9 @@
 
 This app let's you connect your HomeWizard Energy wifi dongle to Homey. You can add your HomeWizard Energy in the device section.
 
+v0.0.6
+- Added aggregated meter for compatibility with power by the hour application
+
 v0.0.5
 - First release
 

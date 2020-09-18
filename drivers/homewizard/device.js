@@ -89,10 +89,12 @@ class HomeWizardDevice extends Homey.Device {
 							var metered_electricity_produced_t1 = callback.total_power_export_t1_kwh;
 							var metered_electricity_consumed_t2 = callback.total_power_import_t2_kwh;
 							var metered_electricity_produced_t2 = callback.total_power_export_t2_kwh;
+							var aggregated_meter_power = (metered_electricity_consumed_t1+metered_electricity_consumed_t2)-(metered_electricity_produced_t1+metered_electricity_produced_t2);
 
 							// Save export data
 							me.addCapability('meter_gas');
 							me.addCapability('measure_power');
+							me.addCapability('meter_power');
               me.addCapability('meter_power.consumed.t1');
 							me.addCapability('meter_power.produced.t1');
 							me.addCapability('meter_power.consumed.t2');
@@ -100,6 +102,7 @@ class HomeWizardDevice extends Homey.Device {
 
 							me.setCapabilityValue("meter_gas", metered_gas);
               me.setCapabilityValue("measure_power", energy_current_netto);
+							me.setCapabilityValue("meter_power", aggregated_meter_power);
 							me.setCapabilityValue("meter_power.consumed.t1", metered_electricity_consumed_t1);
 							me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
 							me.setCapabilityValue("meter_power.consumed.t2", metered_electricity_consumed_t2);
