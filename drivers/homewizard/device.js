@@ -96,21 +96,24 @@ class HomeWizardDevice extends Homey.Device {
 							me.addCapability('measure_power');
 							me.addCapability('meter_power');
               me.addCapability('meter_power.consumed.t1');
-							me.addCapability('meter_power.produced.t1');
 							me.addCapability('meter_power.consumed.t2');
-							me.addCapability('meter_power.produced.t2');
 
 							me.setCapabilityValue("meter_gas", metered_gas);
               me.setCapabilityValue("measure_power", energy_current_netto);
 							me.setCapabilityValue("meter_power", aggregated_meter_power);
 							me.setCapabilityValue("meter_power.consumed.t1", metered_electricity_consumed_t1);
-							me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
 							me.setCapabilityValue("meter_power.consumed.t2", metered_electricity_consumed_t2);
-							me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
 
+							// Check if there is production data else ignore
+							if (metered_electricity_produced_t1 > 1) {
+									me.addCapability('meter_power.produced.t1');
+									me.addCapability('meter_power.produced.t2');
+									me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
+									me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
+							}
 							// Trigger flows
 							if (energy_current_netto != me.getStoreValue('last_measure_power_netto') && energy_current_netto != undefined && energy_current_netto != null) {
-							    console.log("Current Netto Power - "+ energy_current_netto);
+							  // console.log("Current Netto Power - "+ energy_current_netto);
 								me.flowTriggerPowerNetto(me, { netto_power_used: energy_current_netto });
 								me.setStoreValue("last_measure_power_netto",energy_current_netto);
 							}
