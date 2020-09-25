@@ -81,7 +81,7 @@ class HomeWizardDevice extends Homey.Device {
 
 					 if (Object.keys(callback).length > 0) {
 		 		   	try {
-
+ 						  me.setAvailable();
 							// Parse data from Homewizard Energy
 							var metered_gas = callback.total_gas_m3;
 							var energy_current_netto = ( callback.active_power_w ); // Netto power usage from aggregated value, this value can go negative
@@ -92,11 +92,12 @@ class HomeWizardDevice extends Homey.Device {
 							var aggregated_meter_power = (metered_electricity_consumed_t1+metered_electricity_consumed_t2)-(metered_electricity_produced_t1+metered_electricity_produced_t2);
 
 							// Save export data
-							me.addCapability('meter_gas');
-							me.addCapability('measure_power');
-							me.addCapability('meter_power');
-              me.addCapability('meter_power.consumed.t1');
-							me.addCapability('meter_power.consumed.t2');
+							if (!me.hasCapability('meter_gas')) {
+								me.addCapability('meter_gas');
+								me.addCapability('measure_power');
+								me.addCapability('meter_power.consumed.t1');
+								me.addCapability('meter_power.consumed.t2');
+							}
 
 							me.setCapabilityValue("meter_gas", metered_gas);
               me.setCapabilityValue("measure_power", energy_current_netto);
@@ -106,10 +107,12 @@ class HomeWizardDevice extends Homey.Device {
 
 							// Check if there is production data else ignore
 							if (metered_electricity_produced_t1 > 1) {
+								if (!me.hasCapability('meter_power.produced.t1')) {
 									me.addCapability('meter_power.produced.t1');
 									me.addCapability('meter_power.produced.t2');
-									me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
-									me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
+								}
+								me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
+								me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
 							}
 							// Trigger flows
 							if (energy_current_netto != me.getStoreValue('last_measure_power_netto') && energy_current_netto != undefined && energy_current_netto != null) {
@@ -121,6 +124,7 @@ class HomeWizardDevice extends Homey.Device {
 
 						} catch (err) {
 							console.log(err);
+							me.setUnavailable();
 						}
 					}
 				});

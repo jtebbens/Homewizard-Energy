@@ -1,5 +1,5 @@
 {
-  "0.0.7": {
-    "en": "Text changes and conditional checking if you have solarpanels and return energy back to the grid."
+  "0.0.8": {
+    "en": "Make Homewizard Energy device unavailable when connection issue is there."
   }
 }

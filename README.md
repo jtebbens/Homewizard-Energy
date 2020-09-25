@@ -2,6 +2,9 @@
 
 This app let's you connect your HomeWizard Energy wifi dongle to Homey. You can add your HomeWizard Energy in the device section.
 
+v0.0.8
+* Make dongle unavailable when connection issues are there.
+
 v0.0.7
 * Text changes on metrics
 * Conditional checking if there are solarpanels and delivering back to the grid else remove T1 & T2 production meters
