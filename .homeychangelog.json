@@ -1,5 +1,5 @@
 {
-  "0.0.8": {
-    "en": "Make Homewizard Energy device unavailable when connection issue is there."
+  "0.1.0": {
+    "en": "Promisfy the core request"
   }
 }
