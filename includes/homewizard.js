@@ -1,9 +1,27 @@
 'use strict';
 
-//var request = require('request');
+/*
+fetch('https://example.com')
+.then(res => {
+  res.text()       // response body (=> Promise)
+  res.json()       // parse via JSON (=> Promise)
+  res.status       //=> 200
+  res.statusText   //=> 'OK'
+  res.redirected   //=> false
+  res.ok           //=> true
+  res.url          //=> 'https://example.com'
+  res.type         //=> 'basic'
+                   //   ('cors' 'default' 'error'
+                   //    'opaque' 'opaqueredirect')
+  res.headers.get('Content-Type')
+})
+*/
 
-const util = require('util')
-const request = util.promisify(require('request'))
+
+
+const fetch = require('node-fetch');
+
+
 
 const Homey = require('homey');
 
@@ -67,48 +85,46 @@ module.exports = (function(){
       }
    };
 
-   homewizard.call = function(device_id, uri_part, callback) {
-
+   homewizard.call = async function(device_id, uri_part, callback) {
          var me = this;
+         let status;
          if (debug) {console.log('Call device ' + device_id);}
          if ((typeof self.devices[device_id] !== 'undefined') && ("settings" in self.devices[device_id]) && ("homewizard_ip" in self.devices[device_id].settings)) {
             var homewizard_ip = self.devices[device_id].settings.homewizard_ip;
 
-            request('http://' + homewizard_ip + '/api/v1/data')
-            .then((response) => {
-              if (response.statusCode == 200) {
-                 var jsonObject;
-                 try {
-                    jsonObject = JSON.parse(response.body);
+            const json = await fetch('http://' + homewizard_ip + '/api/v1/data')
+            .then((res) => {
+              status = res.status;
+              return res.json()
+            })
+            .then((jsonData) => {
 
-                    if (jsonObject.smr_version != null) {
-                       if(typeof callback === 'function') {
-                           callback(null, jsonObject);
-                       } else {
-                           console.log('Not typeoffunction');
-                       }
-                    }
-                 } catch (exception) {
-                     console.log(exception);
-                    console.log('EXCEPTION JSON : '+ body);
-                    jsonObject = null;
-                    callback('Invalid data', []);
-                 }
-              } else {
-                 if(typeof callback === 'function') {
-                   callback('Error', []);
-                 }
-                 console.log('Error: '+error);
-              }
-
-             //console.error(`status code: ${response && response.statusCode}`)
-             //console.log(response.body)
-
+              if (status == 200) {
+                try {
+                      if (jsonData.smr_version != null) {
+                         if(typeof callback === 'function') {
+                             callback(null, jsonData);
+                         } else {
+                             console.log('Not typeoffunction');
+                         }
+                      }
+                   } catch (exception) {
+                       console.log(exception);
+                      console.log('EXCEPTION JSON : '+ body);
+                      jsonData = null;
+                      callback('Invalid data', []);
+                   }
+                } else {
+                   if(typeof callback === 'function') {
+                     callback('Error', []);
+                   }
+                   console.log('Error: '+error);
+                }
 
             })
-            .catch((error) => {
-             console.error('error: ' + error)
-            })
+            .catch((err) => {
+              console.error(err);
+            });
 
          } else {
             console.log('Homewizard '+ device_id +': settings not found!');

@@ -1,0 +1,24 @@
+{
+  "name": "homewizard-energy",
+  "version": "0.1.0",
+  "description": "Homewizard Energy",
+  "main": "app.js",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "athom app run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtebbens/Homewizard-Energy.git"
+  },
+  "author": "Jeroen Tebbens",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jtebbens/Homewizard-Energy/issues"
+  },
+  "homepage": "https://github.com/jtebbens/Homewizard-Energy#readme"
+}
