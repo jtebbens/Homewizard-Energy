@@ -39,54 +39,40 @@ class HomeWizardDriver extends Homey.Driver {
         });
 
         socket.on('manual_add', async function (device, callback) {
-
+          let status;
             var url = 'http://' + device.settings.homewizard_ip + '/api/v1/data';
 
             console.log('Calling '+ url);
 
-            const json = await fetch(url).then(res => res.json())
+            try {
+              const json = await fetch(url).then(res => res.json())
+              .then((res) => {
+                status = res.status;
+                return res.json()
+                })
+                console.log(status);
 
-            if (json.smr_version != null) {
-              console.log('Call OK');
+                if (json.smr_version != null) {
+                  console.log('Call OK');
 
-              devices[device.data.id] = {
-                  id: device.data.id,
-                  name: device.name,
-                  settings: device.settings,
-                  capabilities: device.capabilities
-              };
-              homewizard.setDevices(devices);
+                  devices[device.data.id] = {
+                      id: device.data.id,
+                      name: device.name,
+                      settings: device.settings,
+                      capabilities: device.capabilities
+                  };
+                  homewizard.setDevices(devices);
 
-              callback( null, devices );
-              socket.emit("success", device);
+                  callback( null, devices );
+                  socket.emit("success", device);
 
+                }
             }
 
-/*            request(url, function (error, response, body) {
-                if (response === null || response === undefined) {
-                            socket.emit("error", "http error");
-                            return;
-                }
-                if (!error && response.statusCode == 200) {
-                    var jsonObject = JSON.parse(body);
-                    console.log (jsonObject);
-                    if (jsonObject.smr_version != null) {
-                        console.log('Call OK');
-
-                        devices[device.data.id] = {
-                            id: device.data.id,
-                            name: device.name,
-                            settings: device.settings,
-                            capabilities: device.capabilities
-                        };
-                        homewizard.setDevices(devices);
-
-                        callback( null, devices );
-                        socket.emit("success", device);
-                    }
-                }
-            });
-*/
+            catch(err) {
+              console.error(err);
+              socket.emit("error", "Wrong ipaddress or the dongle does not run firmware 1.48");
+            };
         });
 
         socket.on('disconnect', () => {

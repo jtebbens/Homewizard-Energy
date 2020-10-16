@@ -1,5 +1,5 @@
 {
-  "0.1.0": {
-    "en": "Core request module replacement with node-fetch, improve performance and lower memery"
+  "0.1.5": {
+    "en": "Phase 3 power support + title updates"
   }
 }

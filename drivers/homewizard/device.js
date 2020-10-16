@@ -89,17 +89,34 @@ class HomeWizardDevice extends Homey.Device {
 							var metered_electricity_produced_t1 = callback.total_power_export_t1_kwh;
 							var metered_electricity_consumed_t2 = callback.total_power_import_t2_kwh;
 							var metered_electricity_produced_t2 = callback.total_power_export_t2_kwh;
-							var aggregated_meter_power = (metered_electricity_consumed_t1+metered_electricity_consumed_t2)-(metered_electricity_produced_t1+metered_electricity_produced_t2);
+							// aggregated meter for Power by the hour support
+							var aggregated_meter_power = ((metered_electricity_consumed_t1+metered_electricity_consumed_t2)-(metered_electricity_produced_t1+metered_electricity_produced_t2));
+							// Phase 3 active power reading
+							var energy_current_netto_l1 = callback.active_power_l1_w;
+							var energy_current_netto_l2 = callback.active_power_l2_w;
+							var energy_current_netto_l3 = callback.active_power_l3_w;
 
 							// Save export data
-							if (!me.hasCapability('meter_gas')) {
-								me.addCapability('meter_gas');
+							if (!me.hasCapability('measure_power')) {
 								me.addCapability('measure_power');
 								me.addCapability('meter_power.consumed.t1');
 								me.addCapability('meter_power.consumed.t2');
 							}
 
-							me.setCapabilityValue("meter_gas", metered_gas);
+							if (!me.hasCapability('meter_power')) {
+								me.addCapability('meter_power');
+							}
+
+							if (metered_gas !== null) {
+								if (!me.hasCapability('meter_gas')) {
+									me.addCapability('meter_gas');
+								}
+								me.setCapabilityValue("meter_gas", metered_gas);
+							}
+							else if (metered_gas == null) {
+								me.removeCapability('meter_gas');
+							}
+
               me.setCapabilityValue("measure_power", energy_current_netto);
 							me.setCapabilityValue("meter_power", aggregated_meter_power);
 							me.setCapabilityValue("meter_power.consumed.t1", metered_electricity_consumed_t1);
@@ -113,6 +130,25 @@ class HomeWizardDevice extends Homey.Device {
 								}
 								me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
 								me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
+							}
+
+							// Phase 3 support
+							if (energy_current_netto_l2 !== null) {
+								if (!me.hasCapability('measure_power.l2')) {
+									me.addCapability('measure_power.l1');
+									me.addCapability('measure_power.l2');
+									me.addCapability('measure_power.l3');
+								}
+								me.setCapabilityValue("measure_power.l1", energy_current_netto_l1);
+								me.setCapabilityValue("measure_power.l2", energy_current_netto_l2);
+								me.setCapabilityValue("measure_power.l3", energy_current_netto_l3);
+							}
+							else if (energy_current_netto_l2 == null) {
+								if (me.hasCapability('measure_power.l2')) {
+									me.removeCapability('measure_power.l1');
+									me.removeCapability('measure_power.l2');
+									me.removeCapability('measure_power.l3');
+								}
 							}
 							// Trigger flows
 							if (energy_current_netto != me.getStoreValue('last_measure_power_netto') && energy_current_netto != undefined && energy_current_netto != null) {

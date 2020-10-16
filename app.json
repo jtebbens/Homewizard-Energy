@@ -3,7 +3,7 @@
   "name": {
     "en": "HomeWizard Energy"
   },
-  "version": "0.1.0",
+  "version": "0.1.5",
   "sdk": 2,
   "compatibility": ">=4.0",
   "description": {
@@ -90,7 +90,10 @@
         "meter_power.consumed.t1",
         "meter_power.produced.t1",
         "meter_power.consumed.t2",
-        "meter_power.produced.t2"
+        "meter_power.produced.t2",
+        "measure_power.l1",
+        "measure_power.l2",
+        "measure_power.l3"
       ],
       "energy": {
         "cumulative": true
@@ -100,6 +103,24 @@
           "title": {
             "en": "Current usage all phases",
             "nl": "Huidig gebruik alle fases"
+          }
+        },
+        "measure_power.l1": {
+          "title": {
+            "en": "Current usage phase 1",
+            "nl": "Huidig gebruik fase 1"
+          }
+        },
+        "measure_power.l2": {
+          "title": {
+            "en": "Current usage phase 2",
+            "nl": "Huidig gebruik fase 2"
+          }
+        },
+        "measure_power.l3": {
+          "title": {
+            "en": "Current usage phase 3",
+            "nl": "Huidig gebruik fase 3"
           }
         },
         "meter_power.consumed.t1": {
