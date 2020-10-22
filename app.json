@@ -3,7 +3,7 @@
   "name": {
     "en": "HomeWizard Energy"
   },
-  "version": "0.1.5",
+  "version": "0.1.6",
   "sdk": 2,
   "compatibility": ">=4.0",
   "description": {

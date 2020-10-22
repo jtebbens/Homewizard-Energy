@@ -45,7 +45,7 @@ class HomeWizardDriver extends Homey.Driver {
             console.log('Calling '+ url);
 
             try {
-              const json = await fetch(url).then(res => res.json())
+              const json = await fetch(url)
               .then((res) => {
                 status = res.status;
                 return res.json()

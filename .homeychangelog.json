@@ -1,5 +1,5 @@
 {
-  "0.1.5": {
-    "en": "Phase 3 power support + title updates"
+  "0.1.6": {
+    "en": "Pairing fix res.json not a function"
   }
 }

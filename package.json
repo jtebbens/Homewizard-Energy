@@ -1,6 +1,6 @@
 {
   "name": "homewizard-energy",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "description": "Homewizard Energy",
   "main": "app.js",
   "dependencies": {
