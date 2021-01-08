@@ -2,6 +2,9 @@
 
 This app let's you connect your HomeWizard Energy wifi dongle to Homey. You can add your HomeWizard Energy in the device section.
 
+v0.1.7
+* Text/label changes 
+
 v0.1.6
 * Pairing fix res.json not a function
 

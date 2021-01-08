@@ -1,5 +1,8 @@
 {
   "0.1.6": {
     "en": "Pairing fix res.json not a function"
+  },
+  "0.1.7": {
+    "en": "Text changes (user request)"
   }
 }
