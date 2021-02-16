@@ -7,7 +7,7 @@
   "sdk": 2,
   "compatibility": ">=4.0",
   "description": {
-    "en": "Control HomeWizard Energy using Homey"
+    "en": "Control your energy consumption with the Homewizard Energy"
   },
   "category": "energy",
   "images": {

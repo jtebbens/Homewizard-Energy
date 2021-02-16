@@ -98,23 +98,23 @@ class HomeWizardDevice extends Homey.Device {
 
 							// Save export data
 							if (!me.hasCapability('measure_power')) {
-								me.addCapability('measure_power');
-								me.addCapability('meter_power.consumed.t1');
-								me.addCapability('meter_power.consumed.t2');
+								await me.addCapability('measure_power');
+								await me.addCapability('meter_power.consumed.t1');
+								await me.addCapability('meter_power.consumed.t2');
 							}
 
 							if (!me.hasCapability('meter_power')) {
-								me.addCapability('meter_power');
+								await me.addCapability('meter_power');
 							}
 
 							if (metered_gas !== null) {
 								if (!me.hasCapability('meter_gas')) {
-									me.addCapability('meter_gas');
+									await me.addCapability('meter_gas');
 								}
 								me.setCapabilityValue("meter_gas", metered_gas);
 							}
 							else if (metered_gas == null) {
-								me.removeCapability('meter_gas');
+								await me.removeCapability('meter_gas');
 							}
 
               me.setCapabilityValue("measure_power", energy_current_netto);
@@ -125,8 +125,8 @@ class HomeWizardDevice extends Homey.Device {
 							// Check if there is production data else ignore
 							if (metered_electricity_produced_t1 > 1) {
 								if (!me.hasCapability('meter_power.produced.t1')) {
-									me.addCapability('meter_power.produced.t1');
-									me.addCapability('meter_power.produced.t2');
+									await me.addCapability('meter_power.produced.t1');
+									await me.addCapability('meter_power.produced.t2');
 								}
 								me.setCapabilityValue("meter_power.produced.t1", metered_electricity_produced_t1);
 								me.setCapabilityValue("meter_power.produced.t2", metered_electricity_produced_t2);
@@ -135,9 +135,9 @@ class HomeWizardDevice extends Homey.Device {
 							// Phase 3 support
 							if (energy_current_netto_l2 !== null) {
 								if (!me.hasCapability('measure_power.l2')) {
-									me.addCapability('measure_power.l1');
-									me.addCapability('measure_power.l2');
-									me.addCapability('measure_power.l3');
+									await me.addCapability('measure_power.l1');
+									await me.addCapability('measure_power.l2');
+									await me.addCapability('measure_power.l3');
 								}
 								me.setCapabilityValue("measure_power.l1", energy_current_netto_l1);
 								me.setCapabilityValue("measure_power.l2", energy_current_netto_l2);
@@ -145,9 +145,9 @@ class HomeWizardDevice extends Homey.Device {
 							}
 							else if (energy_current_netto_l2 == null) {
 								if (me.hasCapability('measure_power.l2')) {
-									me.removeCapability('measure_power.l1');
-									me.removeCapability('measure_power.l2');
-									me.removeCapability('measure_power.l3');
+									await me.removeCapability('measure_power.l1');
+									await me.removeCapability('measure_power.l2');
+									await me.removeCapability('measure_power.l3');
 								}
 							}
 							// Trigger flows
